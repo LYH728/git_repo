@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.fudan.ast.grpc.lib";
+option java_outer_classname = "UserProto";
+
+message GetUserByNameRequest {
+  string username = 1;
+}
+
+// The response message containing a list of user information with the same username.
+message UserResponse {
+  repeated UserInfo user = 1;
+}
+
+message UserInfo {
+  string username = 1;
+  string email = 2;
+  string affiliation = 3;
+  string location = 4;
+}
+
+service UserService {
+  // Get users by username
+  rpc GetUserByName(GetUserByNameRequest) returns (UserResponse);
+}

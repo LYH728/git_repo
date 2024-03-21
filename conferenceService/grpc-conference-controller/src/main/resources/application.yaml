@@ -1,0 +1,40 @@
+server:
+  port: 8080
+grpc:
+  client:
+    grpc-conference-server:
+      address: 'discovery:///grpc-conference-server'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+spring:
+  application:
+    name: grpc-conference-controller
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${cloudServerSlave1:localhost}:8781/eureka/,http://${cloudServerSlave2:localhost}:8782/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+# actuator management
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+# actuator info
+info:
+  app:
+    encoding:UTF-8
+    java.source:1.8
+    java.traget:1.8
+    name:grpc-auth-controller

@@ -1,0 +1,22 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.fudan.ast.grpc.lib";
+option java_outer_classname = "SubmissionProto";
+
+message CreateSubmissionRequest {
+
+  int32 conference_id = 2;
+  string title = 3;
+  string abstract = 4;
+  int32 submitter_id = 5;
+  string paper_file_path = 6;
+  string status = 7;
+}
+
+message CreateSubmissionResponse {
+  bool status = 1;
+}
+
+service SubmissionService {
+  rpc CreateSubmission(CreateSubmissionRequest) returns (CreateSubmissionResponse);
+}

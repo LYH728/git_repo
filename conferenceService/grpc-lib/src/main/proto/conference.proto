@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.fudan.ast.grpc.lib.Conference";
+option java_outer_classname = "ConferenceProto";
+
+import "google/protobuf/timestamp.proto";
+
+package conference;
+
+service ConferenceService {
+
+  rpc InvitePcMember(InvitePcMemberRequest) returns (InvitePcMemberResponse) {}
+
+  rpc ConfirmPcMemberInvitation(ConfirmPcMemberInvitationRequest) returns (ConfirmPcMemberInvitationResponse) {}
+
+  rpc CreateConference(CreateConferenceRequest) returns (CreateConferenceResponse) {}
+
+  rpc ConfirmCreateConference(ConfirmCreateConferenceRequest) returns (ConfirmCreateConferenceResponse) {}
+
+  rpc GetConference(GetConferenceRequest) returns (Conference) {}
+
+  rpc ListConferences(ListConferencesRequest) returns (ListConferencesResponse) {}
+
+  rpc UpdateConference(UpdateConferenceRequest) returns (UpdateConferenceResponse) {}
+
+  rpc AddPaper(AddPaperRequest) returns (AddPaperResponse) {}
+
+  rpc StartSubmission(StartSubmissionRequest) returns (StartSubmissionResponse) {}
+
+  rpc EndSubmission(EndSubmissionRequest) returns (EndSubmissionResponse) {}
+
+}
+
+message ConfirmCreateConferenceRequest {
+  int32 conference_id = 1;
+  bool accept = 2; // 是否接受邀请
+}
+
+message ConfirmCreateConferenceResponse {
+  bool success = 1;
+}
+
+message AddPaperResponse {
+  bool success = 1;
+}
+
+message UpdateConferenceResponse {
+  bool success = 1;
+}
+
+message StartSubmissionResponse {
+  bool success = 1;
+}
+
+message EndSubmissionResponse {
+  bool success = 1;
+}
+
+message InvitePcMemberResponse {
+  bool success = 1;
+}
+
+message ConfirmPcMemberInvitationResponse {
+  bool success = 1;
+}
+message CreateConferenceResponse{
+  bool success = 1;
+}
+message Conference {
+
+  int32 id = 1;
+  string short_name = 2;
+  string full_name = 3;
+  google.protobuf.Timestamp start_date = 4;
+  google.protobuf.Timestamp end_date = 5;
+  string location = 6;
+
+  google.protobuf.Timestamp submission_start_date = 7;
+  google.protobuf.Timestamp submission_end_date = 8;
+
+  ConferenceStatus status = 9;
+
+  int32 chair_id = 10;
+
+}
+
+enum ConferenceStatus {
+  PREPARING = 0;
+  SUBMITTING = 1;
+  REVIEWING = 2;
+  FINAL_JUDGMENT = 3;
+  REVIEW_COMPLETED = 4;
+}
+// 邀请PC成员请求
+message InvitePcMemberRequest {
+  int32 conference_id = 1;
+  int32 user_id = 2;
+}
+
+// 确认邀请请求
+message ConfirmPcMemberInvitationRequest {
+  int32 conference_id = 1;
+  int32 user_id = 2;
+  bool accept = 3; // 是否接受邀请
+}
+
+message GetConferenceRequest {
+  int32 id = 1;
+}
+
+message ListConferencesRequest {
+  int32 page_size = 1;
+  int32 page_number = 2;
+}
+
+message ListConferencesResponse {
+  repeated Conference conferences = 1;
+}
+
+message CreateConferenceRequest {
+  string short_name = 1;
+  string full_name = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+  string location = 5;
+
+  google.protobuf.Timestamp submission_start_date = 6;
+  google.protobuf.Timestamp submission_end_date = 7;
+
+  int32 chair_id = 8;
+}
+
+message ConferenceResponse {
+  Conference conference = 1;
+}
+
+message UpdateConferenceRequest {
+  int32 id = 1;
+
+  string short_name = 2;
+  string full_name = 3;
+  google.protobuf.Timestamp start_date = 4;
+  google.protobuf.Timestamp end_date = 5;
+  string location = 6;
+
+  google.protobuf.Timestamp submission_start_date = 7;
+  google.protobuf.Timestamp submission_end_date = 8;
+
+  ConferenceStatus status = 9;
+}
+
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message Paper {
+
+  int32 id = 1;
+  string title = 2;
+  string abstract = 3;
+  repeated User authors = 4;
+  bytes pdf = 5;
+  PaperStatus status = 6;
+
+}
+
+enum PaperStatus {
+  SUBMITTED = 0;
+  UNDER_REVIEW = 1;
+  ACCEPTED = 2;
+  REJECTED = 3;
+}
+
+message AddPaperRequest {
+  int32 conference_id = 1;
+  Paper paper = 2;
+}
+
+message StartSubmissionRequest {
+  int32 conference_id = 1;
+}
+
+message EndSubmissionRequest {
+  int32 conference_id = 1;
+}
